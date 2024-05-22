@@ -23,6 +23,13 @@ module.exports = {
     },
     extend: {
       colors: {
+        white: '#ffffffe6',
+        gray: {
+          DEFAULT: '#1B1F23',
+          100: '#fff9',
+          200: '#2C2F33',
+          300: '#AFB4B9'
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -56,12 +63,11 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-      },
-      borderRadius: {
-      	xl: "calc(var(--radius) + 4px)",
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        blue: {
+          DEFAULT: "#38434F",
+          100: '#aad6ff'
+        },
+        green: "#37C898"
       },
       keyframes: {
         "accordion-down": {
@@ -87,6 +93,10 @@ module.exports = {
         "collapsible-down": "collapsible-down 0.2s ease-in-out",
         "collapsible-up": "collapsible-up 0.2s ease-in-out",
       },
+      fontSize: {
+        14: '14px',
+        20: '20px'
+      }
     },
   },
   plugins: [animate],
