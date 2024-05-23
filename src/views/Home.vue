@@ -4,11 +4,12 @@
       <h1 class="text-20 lg:text-2xl font-semibold">Experiences</h1>
       <JobFormModal :job-form="jobForm" @add-experience="addExperience" />
     </div>
+    <!-- experience cards -->
     <div class="flex flex-col gap-y-4">
       <div
         v-for="job in jobs"
         :key="job.id"
-        class="flex jobs-start justify-between gap-x-4 pb-4"
+        class="flex jobs-start justify-between gap-x-4 pb-4 relative group"
         :class="{ 'border-b border-gray-200': job.id !== jobs.length - 1 }"
       >
         <div class="w-16 h-16">
@@ -22,7 +23,8 @@
           <li class="font-semibold">{{ job.jobTitle }}</li>
           <li class="text-14">{{ job.company }}</li>
           <li class="text-14 text-gray-100">
-            {{ job.startDate.month + " " + job.startDate.year }} - {{ job.endDate }}
+            {{ job.startDate.month + " " + job.startDate.year }} -
+            {{ job.endDate.month + " " + job.endDate.year }}
           </li>
           <li class="text-14 text-gray-100">{{ job.location }}, {{ job.type }}</li>
           <li class="text-14 my-2">{{ job.description }}</li>
@@ -39,9 +41,20 @@
             </div>
           </li>
         </ul>
+
+        <div
+          class="w-10 h-10 p-2 absolute right-2 top-2 opacity-0 group-hover:opacity-100 transition-all cursor-pointer"
+          @click="handleDelete(job.id)"
+        >
+          <img
+            class="w-full h-full object-cover"
+            src="/icons/trash.svg"
+            alt="delete icon"
+          />
+        </div>
       </div>
     </div>
-
+    <!-- if no data found -->
     <div class="w-full max-w-sm h-auto mx-auto" v-show="!jobs.length">
       <h2 class="text-lg font-medium text-center">NO data found</h2>
       <img
@@ -61,7 +74,7 @@ import type { IJobForm } from "@/types";
 const initialJobForm = () => ({
   id: Date.now(),
   startDate: { month: "", year: "" },
-  endDate: "",
+  endDate: { month: "", year: "" },
   jobTitle: "",
   company: "",
   location: "",
@@ -78,4 +91,8 @@ const addExperience = () => {
   jobs.value.push({ ...jobForm.value });
   jobForm.value = initialJobForm(); // Reset the form
 };
+function handleDelete(id: number | string) {
+  const filteredJobs = jobs.value.filter((job) => job.id != id);
+  jobs.value = filteredJobs;
+}
 </script>

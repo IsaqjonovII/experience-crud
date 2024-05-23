@@ -4,7 +4,10 @@ export interface IJobForm {
         month: string;
         year: string | number;
     },
-    endDate: string,
+    endDate: {
+        month: string;
+        year: string | number;
+    },
     jobTitle: string,
     company: string,
     location: string,

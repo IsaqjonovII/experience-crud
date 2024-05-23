@@ -23,15 +23,15 @@
               <a href="#" class="text-blue-100">sharing profile changes.</a>
             </p>
           </div>
-          <Switch id="notify-network" />
         </div>
         <div class="text-14 text-gray-100 my-4">* Indicates required</div>
-        <CustomForm :job-form="jobForm" />
+        <CustomForm :job-form="jobForm" :validation-errors="validationErrors" />
       </div>
       <DialogFooter class="flex justify-end px-5 py-2 border-t border-gray-200">
         <Button
           type="button"
           variant="primary"
+          :disabled="!isFormValid"
           class="bg-blue-100 text-black px-4 py-2 rounded-full"
           @click="handleSubmit"
         >
@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import {
   Dialog,
   DialogContent,
@@ -52,21 +52,45 @@ import {
   DialogTrigger,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { Switch } from "@/components/ui/switch";
 import CustomForm from "@/components/Jobs/Form.vue";
+
 import type { IJobForm } from "@/types";
 
 interface Props {
   jobForm: IJobForm;
 }
 
-defineProps<Props>();
+const { jobForm } = defineProps<Props>();
 const emit = defineEmits<{ "add-experience": [] }>();
 
 const isModalOpen = ref(false);
+const isFormValid = ref(false);
+const validationErrors = ref<Record<string, string>>({});
 
+watch(
+  jobForm,
+  () => {
+    isFormValid.value = validateForm();
+  },
+  { deep: true }
+);
+
+function validateForm() {
+  const errors: Record<string, string> = {};
+  if (!jobForm.jobTitle) errors.jobTitle = "Title is required";
+  if (!jobForm.company) errors.company = "Company is required";
+  if (!jobForm.type) errors.type = "Employment type is required";
+  if (!jobForm.location) errors.location = "Location is required";
+  if (!jobForm.startDate.month || !jobForm.startDate.year)
+    errors.startDate = "Start date is required";
+  if (!jobForm.endDate.month) errors.endDate = "End date is required";
+  validationErrors.value = errors;
+  return Object.keys(errors).length === 0;
+}
 const handleSubmit = () => {
-  emit("add-experience");
-  isModalOpen.value = false;
+  if (validateForm()) {
+    emit("add-experience");
+    isModalOpen.value = false;
+  }
 };
 </script>
