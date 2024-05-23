@@ -27,7 +27,7 @@
             {{ job.endDate.month + " " + job.endDate.year }}
           </li>
           <li class="text-14 text-gray-100">{{ job.location }}, {{ job.type }}</li>
-          <li class="text-14 my-2">{{ job.description }}</li>
+          <li class="text-14 my-2 break-all">{{ job.description }}</li>
           <li>
             <div class="flex items-center flex-wrap gap-2">
               <div class="w-4 h-4">
